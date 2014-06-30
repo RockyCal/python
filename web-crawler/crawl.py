@@ -43,8 +43,13 @@ def get_next_link(msg):
 
 
 def get_company_name(soup):
-    print('in get company name')
-    c_name = soup.findAll(attrs={"class": "jrat"})
+    """
+
+    :param soup:
+    :return:
+    """
+
+    c_name = soup.find_all('a', "jrat")
     cname = []
     for i in c_name:
         cname.append(i.text)
@@ -52,13 +57,13 @@ def get_company_name(soup):
 
 
 def get_phone(soup):
-    divtag = soup.findAll(attrs={"class": "ctc f13"})
+    divtag = soup.findAll("ctc f13")
     phone = [i.p.text.replace('Call:', '') for i in divtag]
     return phone
 
 
 def get_add(soup):
-    add_list = soup.findAll(attrs={"class": "jrc13"})
+    add_list = soup.findAll("jrc13")
     add = [i.text.split('|')[0].replace('\t', '') for i in add_list]
     return add
 
@@ -68,7 +73,6 @@ if __name__ == '__main__':
     where = input("City: ")
     what = input("Category: ")
     url = get_start_url(listing)
-    print(len(url))
 
     name = []
     person = []
@@ -78,20 +82,23 @@ if __name__ == '__main__':
     while url:
         if ' ' in url:
             url = url.replace(' ', '%20')
-            print(url)
-        msg = requests.get(url).text
+            #print(url)
+        msg = (requests.get(url)).text
         print(url)
         soup = BeautifulSoup(msg)
+        print(soup)
         for i in get_company_name(soup):
+        #for tag in soup.find_all('a', 'jrat'):
             name.append(i)
         for i in get_phone(soup):
             phone.append(i)
         for i in get_add(soup):
             add.append(i)
         url = get_next_link(msg)
-    book = openpyxl.Workbook()
+    book = Workbook()
     sheet1 = book.active
     index = ['NAME', 'PHONE', 'ADDRESS']
+
     # style = xlwt.XFStyle()
     #font = xlwt.Font()
     #font.name = 'Times New Roman'
@@ -107,4 +114,3 @@ if __name__ == '__main__':
         sheet1.cell('%s%s' % (i + 1, 2)).value = add[i]
 
     book.save(what + '.xlsx')
-        
