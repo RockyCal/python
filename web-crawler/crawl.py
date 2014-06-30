@@ -1,21 +1,26 @@
 import re
-import urllib2
-from BeautifulSoup import BeautifulSoup
-import xlwt
+from bs4 import BeautifulSoup
+import urllib5
+import xlwt3
 
 def get_start_url(listing):
-    if(listing.endswith('/')):
-        if(listing.startswith('w')):
-            list="http://"+listing+where.capitalize()+'/'+what.capitalize()
+    if listing.endswith('/'):
+        if listing.startswith('w'):
+            listings="http://"+listing+where.capitalize()+'/'+what.capitalize()
         else:
-            list=listing+where.capitalize()+'/'+what.capitalize()
+            listings=listing+where.capitalize()+'/'+what.capitalize()
     else:
-        list="http://"+listing+'/'+where.capitalize()+'/'+what.capitalize()
-    return list
+        listings="http://"+listing+'/'+where.capitalize()+'/'+what.capitalize()
+    return listings
 
 def get_html(url):
-    msg=urllib2.urlopen(url).read()
-    return msg
+    """
+
+    :param url:
+    :return:
+    """
+    message = urllib5.urlopen(url).read()
+    return message
 
 def get_next_link(msg):
     class_regex=re.compile('<div\sclass=[\'"]pagination[\'"]>(.*?)</div>')
@@ -51,22 +56,22 @@ def get_add(soup):
 
 if __name__=='__main__':
     listing="www.justdial.com"
-    where=raw_input("City: ")
-    what=raw_input("Category: ")
-    url=get_start_url(listing)
+    where = raw_input("City: ")
+    what = raw_input("Category: ")
+    url = get_start_url(listing)
    
-    name=[]
-    person=[]
-    phone=[]
-    add=[]
+    name = []
+    person = []
+    phone = []
+    add = []
 
     while url:
         if ' ' in url:
-            url=url.replace(' ','%20')
-            print url
-        msg=get_html(url)
-        print url
-        soup=BeautifulSoup(msg)
+            url = url.replace(' ','%20')
+            print (url)
+        msg = get_html(url)
+        print (url)
+        soup = bs4.BeautifulSoup(msg)
         for i in get_company_name(soup):
             name.append(i)
         for i in get_phone(soup):   
@@ -74,14 +79,14 @@ if __name__=='__main__':
         for i in get_add(soup):
             add.append(i)
         url=get_next_link(msg)
-    book=xlwt.Workbook()
-    sheet1=book.add_sheet('sheet1')
-    index=['NAME','PHONE','ADDRESS']
-    style=xlwt.XFStyle()
-    font=xlwt.Font()
-    font.name='Times New Roman'
-    font.bold=True
-    style.font=font
+    book = xlwt.Workbook()
+    sheet1 = book.add_sheet('sheet1')
+    index = ['NAME','PHONE','ADDRESS']
+    style = xlwt.XFStyle()
+    font = xlwt.Font()
+    font.name = 'Times New Roman'
+    font.bold = True
+    style.font = font
     
     for n in range(0,3):
         sheet1.write(0,n,index[n].upper(),style)
@@ -91,5 +96,5 @@ if __name__=='__main__':
         sheet1.write(i+1,1,phone[i])
         sheet1.write(i+1,2,add[i])
 
-    book.save(what+'.xls')
+    book.save(what+'.xlsx')
         
