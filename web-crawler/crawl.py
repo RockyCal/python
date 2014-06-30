@@ -39,7 +39,7 @@ def get_next_link(msg):
         return ''
 
 def get_company_name(soup):
-    c_name=soup.findAll(attrs={"class":"Ctitle"})
+    c_name=soup.findAll(attrs={"class":"jrat"})
     cname=[]
     for i in c_name:
         cname.append(i.text)
