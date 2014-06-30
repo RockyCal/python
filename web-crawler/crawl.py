@@ -1,7 +1,8 @@
 import re
+import requests
 from bs4 import BeautifulSoup
-import urllib5
-import xlwt3
+import urllib3
+from openpyxl import Workbook
 
 def get_start_url(listing):
     if listing.endswith('/'):
@@ -19,7 +20,7 @@ def get_html(url):
     :param url:
     :return:
     """
-    message = urllib5.urlopen(url).read()
+    message = requests.get(url)
     return message
 
 def get_next_link(msg):
@@ -56,8 +57,8 @@ def get_add(soup):
 
 if __name__=='__main__':
     listing="www.justdial.com"
-    where = raw_input("City: ")
-    what = raw_input("Category: ")
+    where = input("City: ")
+    what = input("Category: ")
     url = get_start_url(listing)
    
     name = []
@@ -79,14 +80,14 @@ if __name__=='__main__':
         for i in get_add(soup):
             add.append(i)
         url=get_next_link(msg)
-    book = xlwt.Workbook()
-    sheet1 = book.add_sheet('sheet1')
+    book = Workbook()
+    sheet1 = book.active
     index = ['NAME','PHONE','ADDRESS']
-    style = xlwt.XFStyle()
-    font = xlwt.Font()
-    font.name = 'Times New Roman'
-    font.bold = True
-    style.font = font
+    #style = xlwt.XFStyle()
+    #font = xlwt.Font()
+    #font.name = 'Times New Roman'
+    #font.bold = True
+    #style.font = font
     
     for n in range(0,3):
         sheet1.write(0,n,index[n].upper(),style)
