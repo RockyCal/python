@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="253e502c-7214-4a08-97e1-a58bff5cb2bc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web-crawler/.gitignore" afterPath="$PROJECT_DIR$/web-crawler/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="python.iws" />
@@ -339,7 +338,11 @@
       <created>1404158137741</created>
       <updated>1404158137741</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Ignore xlsx files">
+      <created>1404158722605</created>
+      <updated>1404158722605</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -389,7 +392,8 @@
     <MESSAGE value="Changed class for phone numbers to ctc f13&#10;And address to jrc13" />
     <MESSAGE value="Changed class for phone numbers to ctc f13&#10;And address to jrc13&#10;And title to jrat" />
     <MESSAGE value="Deleted food and pet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Deleted food and pet" />
+    <MESSAGE value="Ignore xlsx files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ignore xlsx files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
