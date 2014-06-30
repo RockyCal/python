@@ -46,12 +46,12 @@ def get_company_name(soup):
     return cname
 
 def get_phone(soup):
-    divtag=soup.findAll(attrs={"class":"logoDesc"})
+    divtag=soup.findAll(attrs={"class":"ctc f13"})
     phone=[i.p.text.replace('Call:','') for i in divtag]
     return phone
 
 def get_add(soup):
-    add_list=soup.findAll(attrs={"class":"ctc f13"})
+    add_list=soup.findAll(attrs={"class":"jrc13"})
     add=[i.text.split('|')[0].replace('\t','') for i in add_list]
     return add
 
