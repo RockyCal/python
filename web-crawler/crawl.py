@@ -51,7 +51,7 @@ def get_phone(soup):
     return phone
 
 def get_add(soup):
-    add_list=soup.findAll(attrs={"class":"logoDesc"})
+    add_list=soup.findAll(attrs={"class":"ctc f13"})
     add=[i.text.split('|')[0].replace('\t','') for i in add_list]
     return add
 
@@ -67,7 +67,6 @@ if __name__ == '__main__':
     add = []
 
     while url:
-        print('goes in while')
         if ' ' in url:
             url = url.replace(' ','%20')
             print(url)
