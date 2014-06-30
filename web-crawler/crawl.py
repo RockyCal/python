@@ -1,8 +1,8 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-import urllib3
-from openpyxl import Workbook
+import openpyxl
+from openpyxl import Workbook, cell
 
 def get_start_url(listing):
     if listing.endswith('/'):
@@ -24,14 +24,14 @@ def get_html(url):
     return message
 
 def get_next_link(msg):
-    class_regex=re.compile('<div\sclass=[\'"]pagination[\'"]>(.*?)</div>')
-    a_list=class_regex.findall(msg)
+    class_regex = re.compile('<div\sclass=[\'"]pagination[\'"]>(.*?)</div>')
+    a_list = class_regex.findall(msg)
     if len(a_list)>0:
-        a=a_list[0].split('</a>')
-        a=[i for i in a if 'next' in i]
-        link_regex=re.compile('<a\shref=[\'"](.*?)[\'"]>next\s')
-        next_link=link_regex.findall(a[0])
-        if len(next_link)>0:
+        a = a_list[0].split('</a>')
+        a = [i for i in a if 'next' in i]
+        link_regex = re.compile('<a\shref=[\'"](.*?)[\'"]>next\s')
+        next_link = link_regex.findall(a[0])
+        if len(next_link) > 0:
             return next_link[0]
         else:
             return ''
@@ -55,8 +55,8 @@ def get_add(soup):
     add=[i.text.split('|')[0].replace('\t','') for i in add_list]
     return add
 
-if __name__=='__main__':
-    listing="www.justdial.com"
+if __name__ == '__main__':
+    listing = "www.justdial.com"
     where = input("City: ")
     what = input("Category: ")
     url = get_start_url(listing)
@@ -67,12 +67,13 @@ if __name__=='__main__':
     add = []
 
     while url:
+        print('goes in while')
         if ' ' in url:
             url = url.replace(' ','%20')
-            print (url)
-        msg = get_html(url)
-        print (url)
-        soup = bs4.BeautifulSoup(msg)
+            print(url)
+        msg = requests.get(url).text
+        print(url)
+        soup = BeautifulSoup(msg)
         for i in get_company_name(soup):
             name.append(i)
         for i in get_phone(soup):   
@@ -80,7 +81,7 @@ if __name__=='__main__':
         for i in get_add(soup):
             add.append(i)
         url=get_next_link(msg)
-    book = Workbook()
+    book = openpyxl.Workbook()
     sheet1 = book.active
     index = ['NAME','PHONE','ADDRESS']
     #style = xlwt.XFStyle()
@@ -89,13 +90,13 @@ if __name__=='__main__':
     #font.bold = True
     #style.font = font
     
-    for n in range(0,3):
-        sheet1.write(0,n,index[n].upper(),style)
+    # for n in range(0,3):
+        # sheet1.write(0,n,index[n].upper(),style)
         
     for i in range(0,len(name)):
-        sheet1.write(i+1,0,name[i])
-        sheet1.write(i+1,1,phone[i])
-        sheet1.write(i+1,2,add[i])
+        sheet1.cell('%s%s'%(i+1,0)).value = name[i]
+        sheet1.cell('%s%s'%(i+1,1)).value = phone[i]
+        sheet1.cell('%s%s'%(i+1,2)).value = add[i]
 
     book.save(what+'.xlsx')
         
